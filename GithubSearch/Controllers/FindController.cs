@@ -2,7 +2,7 @@
 using GithubSearch.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GithubSearch
+namespace GithubSearch.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,7 +14,7 @@ namespace GithubSearch
         {
             _dataContext = dataContext;
             _gitSearch = gitSearch;
-         }
+        }
         // GET: api/<FindController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -22,7 +22,7 @@ namespace GithubSearch
             return new string[] { "value1", "value2" };
         }
 
-         // POST api/<FindController>
+        // POST api/<FindController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] string value)
         {
