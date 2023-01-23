@@ -6,21 +6,32 @@ namespace GithubSearch.Mappers
 {
     public static class GitResponseToGet
     {
-        public static FindResponse MapFromModel(GitResponse item)
+        public static List<FindResponse> MapFromModel(GitResponse item)
         {
-            FindResponse result = null;
+            List<FindResponse> result = new ();
             try
             {
-                var deSerResult = JsonSerializer.Deserialize<GitResponse>(item.SearchResult);
-
-                result = new FindResponse()
+                var deSerResult = JsonSerializer.Deserialize<GitResult>(item.SearchResult);
+                if (deSerResult != null)
                 {
-
-                };
+                    foreach(var deser in deSerResult.Items) 
+                    {
+                        var resultItem = new FindResponse();
+                        resultItem.ProjectName = deser.ProjectName;
+                        resultItem.ProjectUrl = deser.ProjectUrl;
+                        resultItem.WatchersCount = deser.WatchersCount;
+                        resultItem.StargazersCount = deser.StargazersCount;
+                        resultItem.Owner = deser.Owner.Login;
+                        resultItem.Id = item.Id;
+                        resultItem.SearchString = item.SearchString;
+                    
+                        result.Add(resultItem);
+                    }
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Ошибка при десериализации");
+                Console.WriteLine($"{e.Message} Ошибка при десериализации");
             }
             return result;
         }

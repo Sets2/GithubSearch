@@ -1,5 +1,6 @@
 ﻿using GithubSearch.Core.Domain;
 using GithubSearch.DataAccess;
+using GithubSearch.Mappers;
 using GithubSearch.Models;
 using GithubSearch.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace GithubSearch.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
+            List<FindResponse> result = new();
             try
             {
                 var items = await _dataContext.GitResponse.ToListAsync();
@@ -31,9 +33,11 @@ namespace GithubSearch.Controllers
                 { 
                     foreach(var item in items)
                     {
+                        var itemResult = GitResponseToGet.MapFromModel(item);
+                        result.AddRange(itemResult);
                     }
                 }
-                return Ok();
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -69,7 +73,20 @@ namespace GithubSearch.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            return null;
+            try
+            {
+                var result = await _dataContext.GitResponse.FirstOrDefaultAsync(x => x.Id == id);
+                if (result == null) return NotFound();
+                _dataContext.GitResponse.Remove(result);
+                await _dataContext.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                var err = "Ошибка обновления данных в таблице channel БД";
+                _logger.LogError(e, $"{e.Message}. {err}");
+                return Problem(err);
+            }
         }
     }
 }

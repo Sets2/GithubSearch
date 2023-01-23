@@ -7,7 +7,7 @@ namespace GithubSearch.Models
         [JsonPropertyName("total_count")]
         public int TotalCount { get; set; }
         [JsonPropertyName("items")]
-        public Item[] Item { get; set; } = null!;
+        public Item[] Items { get; set; } = null!;
     }
 
     public class Item
@@ -21,7 +21,7 @@ namespace GithubSearch.Models
         [JsonPropertyName("html_url")]
         public string? ProjectUrl { get; set; }
         [JsonPropertyName("owner")]
-        public Owner? Owner { get; set; }
+        public Owner Owner { get; set; } = null!;
     }
     public class Owner 
     {
