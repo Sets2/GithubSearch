@@ -1,7 +1,9 @@
 ﻿using GithubSearch.Core.Domain;
 using GithubSearch.DataAccess;
+using GithubSearch.Models;
 using GithubSearch.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GithubSearch.Controllers
 {
@@ -20,9 +22,24 @@ namespace GithubSearch.Controllers
         }
         // GET: api/<FindController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var items = await _dataContext.GitResponse.ToListAsync();
+                if (items!=null) 
+                { 
+                    foreach(var item in items)
+                    {
+                    }
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"{e.Message} Ошибка обращения к БД");
+                return Problem("Ошибка обращения к БД");
+            }
         }
 
         // POST api/<FindController>
