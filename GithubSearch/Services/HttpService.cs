@@ -1,9 +1,9 @@
 ﻿namespace GithubSearch.Services
 {
-    public class HttpContext
+    public class HttpService    
     {
         private readonly HttpClient _httpClient;
-        public HttpContext()
+        public HttpService()
         {
             _httpClient=new HttpClient();
         }

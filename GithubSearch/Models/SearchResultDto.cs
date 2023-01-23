@@ -2,7 +2,15 @@
 
 namespace GithubSearch.Models
 {
-    public class SearchResultDto
+    public class GitResult
+    {
+        [JsonPropertyName("total_count")]
+        public int TotalCount { get; set; }
+        [JsonPropertyName("items")]
+        public Item[] Item { get; set; } = null!;
+    }
+
+    public class Item
     {
         [JsonPropertyName("name")]
         public string? ProjectName { get; set; }

@@ -1,4 +1,5 @@
 ﻿using GithubSearch.DataAccess;
+using GithubSearch.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GithubSearch
@@ -8,12 +9,12 @@ namespace GithubSearch
     public class FindController : ControllerBase
     {
         private readonly DataContext _dataContext;
-        private readonly HttpContext _httpContext;
-        public FindController(DataContext dataContext, HttpContext httpContext)
+        private readonly IGitSearch _gitSearch;
+        public FindController(DataContext dataContext, IGitSearch gitSearch)
         {
             _dataContext = dataContext;
-            _httpContext = httpContext;
-        }
+            _gitSearch = gitSearch;
+         }
         // GET: api/<FindController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -21,30 +22,19 @@ namespace GithubSearch
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<FindController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<FindController>
+         // POST api/<FindController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] string value)
         {
-            
-        }
-
-        // PUT api/<FindController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            var result = await _gitSearch.GetSearch(value);
+            return Ok(result);
         }
 
         // DELETE api/<FindController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            return null;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GithubSearch.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,7 +97,8 @@ static void RegisterServices(WebApplicationBuilder builder)
                     Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
             };
         });
-    services.AddSingleton<HttpContext>();
+    services.AddSingleton<HttpService>();
+    services.AddTransient<IGitSearch, GitSearch>();
 }
 
 static void Configure(WebApplication app)
