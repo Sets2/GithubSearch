@@ -6,7 +6,7 @@ namespace GithubSearch.Core.Domain
     {
         [Key]
         public long Id { get; set; }
-
+        public string SearchString { get; set; }
         public string SearchResult { get; set; } = null!;
 
      }
