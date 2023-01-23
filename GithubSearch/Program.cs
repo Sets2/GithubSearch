@@ -123,4 +123,20 @@ static void Configure(WebApplication app)
     
     app.MapControllers();
     app.MapRazorPages();
+
+    using var scope = app.Services.CreateScope();
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var dataContext = services.GetRequiredService<DataContext>();
+            dataContext.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occured during open and migration");
+        }
+    }
+
 }

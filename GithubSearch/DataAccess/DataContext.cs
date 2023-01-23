@@ -13,7 +13,7 @@ namespace GithubSearch.DataAccess
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
  //           Database.EnsureDeleted();
-            Database.EnsureCreated();
+ //           Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
