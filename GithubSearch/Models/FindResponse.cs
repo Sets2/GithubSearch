@@ -13,7 +13,7 @@
 
     public class FindResponseWithPagination
     {
-        public List<FindResponse> Response { get; set; }
-        public Pagination Pagination { get; set; }
+        public List<FindResponse> Response { get; set; } = null!;
+        public Pagination Pagination { get; set; } = null!;
     }
 }

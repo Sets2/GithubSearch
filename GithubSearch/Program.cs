@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GithubSearch.Services;
+using GithubSearch.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,8 +71,7 @@ static void RegisterServices(WebApplicationBuilder builder)
         .AddDefaultTokenProviders()
         .AddEntityFrameworkStores<DataContext>();
 
-    //services.AddSingleton<ITokenService, TokenService>();
-    //services.AddScoped<IUserRepositoryAuth, UserRepositoryAuth>();
+    services.AddSingleton<ITokenService, TokenService>();
      //services.AddScoped<IDbInitializer, DbInitializer>();
 
     services.AddAuthorization();

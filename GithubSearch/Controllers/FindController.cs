@@ -3,6 +3,7 @@ using GithubSearch.DataAccess;
 using GithubSearch.Mappers;
 using GithubSearch.Models;
 using GithubSearch.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace GithubSearch.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FindController : ControllerBase
     {
         private const int _defPageSize = 20;
@@ -42,11 +44,13 @@ namespace GithubSearch.Controllers
                 pag.pageNumber = n ?? 1;
                 pag.pageSize = s ?? _defPageSize;
                 pag.totalCount = result.Count;
-                pag.totalGitResponse = result.Count;
+                pag.totalGitResponse = items?.Count ?? 0;
                 var count = pag.pageNumber * pag.pageSize > pag.totalCount ?
                     pag.totalCount % pag.pageSize : pag.pageSize;
                 result = result.GetRange((pag.pageNumber - 1)*pag.pageSize
                     , count);
+                pag.totalPages = pag.totalCount / pag.pageSize + (count>0? 1:0);
+
                 var resultPag = new FindResponseWithPagination() 
                     { Response = result, Pagination = pag };
                 return Ok(resultPag);
