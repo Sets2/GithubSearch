@@ -7,11 +7,11 @@ namespace GithubSearch.Services
         const string uri = "https://api.github.com/search/repositories?q=";
         const string uagent = "Mozilla/5.0 (Windows NT 10.0; Win64; rv:77.0) Gecko/20100101 Firefox/77.0";
         ILogger<GitSearch> _logger;
-        HttpClient _httpClient;
-        public GitSearch(ILogger<GitSearch> logger, HttpClient httpClient)
+        HttpService _httpService;
+        public GitSearch(ILogger<GitSearch> logger, HttpService httpService)
         {
             _logger = logger;
-            _httpClient = httpClient;
+            _httpService = httpService;
         }
 
         public async Task<string?> GetSearch(string searchStr)
@@ -24,7 +24,7 @@ namespace GithubSearch.Services
                 request = new HttpRequestMessage(HttpMethod.Get, uri + searchStr);
                 request.Headers.Add("Accept-Charset", "UTF-8");
                 request.Headers.Add("User-Agent", uagent);
-                response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+                response = await _httpService.HttpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
                 if (response.IsSuccessStatusCode)
                 {
                     var contentByte = await response.Content.ReadAsByteArrayAsync();

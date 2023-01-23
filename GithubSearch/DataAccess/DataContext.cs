@@ -6,7 +6,7 @@ namespace GithubSearch.DataAccess
 {
     public class DataContext: IdentityDbContext
     {
-        public DbSet<GitResponse> Channel { get; set; } = null!;
+        public DbSet<GitResponse> GitResponse { get; set; } = null!;
 
         public DataContext() { }
 
