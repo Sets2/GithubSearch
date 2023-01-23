@@ -15,9 +15,9 @@ namespace GithubSearch.Models
         [JsonPropertyName("name")]
         public string? ProjectName { get; set; }
         [JsonPropertyName("stargazers_count")]
-        public string? StargazersCount { get; set; }
+        public int? StargazersCount { get; set; }
         [JsonPropertyName("watchers_count")]
-        public string? WatchersCount { get; set; }
+        public int? WatchersCount { get; set; }
         [JsonPropertyName("html_url")]
         public string? ProjectUrl { get; set; }
         [JsonPropertyName("owner")]

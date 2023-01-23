@@ -12,6 +12,7 @@ namespace GithubSearch.Controllers
     [ApiController]
     public class FindController : ControllerBase
     {
+        private const int _defPageSize = 20;
         private readonly ILogger<FindController> _logger;
         private readonly DataContext _dataContext;
         private readonly IGitSearch _gitSearch;
@@ -23,7 +24,7 @@ namespace GithubSearch.Controllers
         }
         // GET: api/<FindController>
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get([FromQuery] int? n, [FromQuery] int? s)
         {
             List<FindResponse> result = new();
             try
@@ -37,7 +38,18 @@ namespace GithubSearch.Controllers
                         result.AddRange(itemResult);
                     }
                 }
-                return Ok(result);
+                var pag = new Pagination();
+                pag.pageNumber = n ?? 1;
+                pag.pageSize = s ?? _defPageSize;
+                pag.totalCount = result.Count;
+                pag.totalGitResponse = result.Count;
+                var count = pag.pageNumber * pag.pageSize > pag.totalCount ?
+                    pag.totalCount % pag.pageSize : pag.pageSize;
+                result = result.GetRange((pag.pageNumber - 1)*pag.pageSize
+                    , count);
+                var resultPag = new FindResponseWithPagination() 
+                    { Response = result, Pagination = pag };
+                return Ok(resultPag);
             }
             catch (Exception e)
             {

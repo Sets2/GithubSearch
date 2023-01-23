@@ -12,7 +12,7 @@ namespace GithubSearch.DataAccess
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            Database.EnsureDeleted();
+ //           Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
